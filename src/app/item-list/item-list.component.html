@@ -1,0 +1,7 @@
+<div class='products-container'>
+  <h1>Products</h1>
+  <div class='products'>
+    <app-item-card *ngFor='let product of groupList; index as i;'
+      [itemData]='product'></app-item-card>
+  </div>
+</div>

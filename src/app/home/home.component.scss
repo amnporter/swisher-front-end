@@ -1,0 +1,37 @@
+:host {
+  width: 100%;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.featured {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba(226, 220, 197, 0.5);
+  min-width: 200px;
+  font-weight: bold;
+
+  span {
+    &:hover {
+      color: #3f51b5;
+      cursor: pointer;
+    }
+  }
+}
+
+.products {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  max-width: 70vw;
+  align-self: center;
+
+  app-item-card{
+    margin-top: 10px;
+  }
+}

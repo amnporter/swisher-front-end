@@ -1,0 +1,16 @@
+.products-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.products{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  max-width: 70vw;
+  align-self: center;
+
+  app-item-card{
+    margin-top: 10px;
+  }
+}

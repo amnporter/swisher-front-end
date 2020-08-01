@@ -1,0 +1,138 @@
+<h1>Checkout</h1>
+<div class='cart-container'>
+  <div class='left-side'>
+    <div class='mat-card-container'>
+      <mat-card>
+        <form #postForm='ngForm'
+          (submit)='onSubmit(postForm)'>
+          <div class='name'>
+            <mat-form-field>
+              <mat-label>First name</mat-label>
+              <input matInput
+                type='text'
+                name='firstName'
+                ngModel
+                required
+                #firstName='ngModel'>
+              <mat-error *ngIf='firstName.invalid'>Please enter</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Last name</mat-label>
+              <input matInput
+                type='text'
+                name='lastName'
+                ngModel
+                required
+                #lastName='ngModel'>
+              <mat-error *ngIf='lastName.invalid'>Please enter</mat-error>
+            </mat-form-field>
+          </div>
+          <div class='address-block'>
+            <mat-form-field>
+              <mat-label>Address</mat-label>
+              <input matInput
+                type='text'
+                name='address'
+                value='408 W North Bay St'>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Address 2</mat-label>
+              <input matInput
+                type='text'
+                name='address2'>
+            </mat-form-field>
+          </div>
+          <div class='address-block-2'>
+            <mat-form-field appearance='fill'>
+              <mat-label>Country</mat-label>
+              <mat-select required
+                value='U.S.of.A'>
+                <mat-option value='U.S.of.A'>U.S.of.A</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='fill'>
+              <mat-label>State</mat-label>
+              <mat-select required
+                value='Florida'>
+                <mat-option value='Florida'>Florida</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class='zip'>
+              <mat-label>Zip</mat-label>
+              <input matInput
+                type='text'
+                value='33603'>
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class='radio-group'>
+            <mat-radio-group value='cc'>
+              <mat-radio-button value='cc'>Credit Card</mat-radio-button>
+              <mat-radio-button>Paypal</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class='cc-row1'>
+            <mat-form-field>
+              <mat-label>Name on card</mat-label>
+              <input matInput
+                type='text'
+                name='nameOnCard'
+                value='Chris Porter'>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Credit card number</mat-label>
+              <input matInput
+                type='text'
+                name='ccNumber'
+                value='xxxx-xxxx-xxxx-xxxx'>
+            </mat-form-field>
+          </div>
+          <div class='cc-row2'>
+            <mat-form-field>
+              <mat-label>Expiration</mat-label>
+              <input matInput
+                type='text'
+                name='expiration'
+                value='1020'>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>CVV</mat-label>
+              <input matInput
+                type='password'
+                name='ccv'
+                value='1234'>
+            </mat-form-field>
+          </div>
+          <div class='button-container'>
+            <button mat-raised-button
+              color='primary'
+              type='submit'>BUY NOW</button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+  <div class='right-side'>
+    <h3>Cart</h3>
+    <mat-card>
+      <div class='cart-item'
+        *ngFor='let item of cartData; let i = index'>
+        <div class='product-info'>
+          <div>ID: {{item.id}}</div>
+          <div>{{item.price | currency}}</div>
+          <div>{{item.brandTitle}}</div>
+        </div>
+        <button mat-icon-button
+          aria-label=''
+          color='primary'>
+          <mat-icon mat-list-icon
+            (click)='cartService.removeFromCart(i)'>delete</mat-icon>
+        </button>
+      </div>
+      <div *ngIf='cartData.length<=0'>No Items in your cart</div>
+    </mat-card>
+    <mat-card>
+      <div>TOTAL: {{total | currency}}</div>
+    </mat-card>
+  </div>
+</div>

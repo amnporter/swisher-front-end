@@ -1,0 +1,37 @@
+.item-description-container {
+  display: flex;
+}
+
+.left-side {
+  display: flex;
+  width: 60vw;
+  justify-content: center;
+}
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  justify-content: center;
+
+  mat-divider {
+    margin: 15px 0;
+  }
+
+  .cost {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .cart-line {
+    align-self: flex-end;
+
+    mat-form-field {
+      width: 50px;
+    }
+
+    .cart-button{
+      margin-left: 10px;
+    }
+  }
+}

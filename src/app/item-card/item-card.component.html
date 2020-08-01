@@ -1,0 +1,17 @@
+<mat-card class='card'>
+  <mat-card-header>
+    <div mat-card-avatar
+      style="background-image: url('{{itemData.brandLogo}}'); background-size: cover;"></div>
+    <mat-card-title>{{itemData.brandTitle}}</mat-card-title>
+    <mat-card-subtitle>{{itemData.group}}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image
+    src='{{itemData.itemImage}}'
+    alt=''>
+  <mat-card-actions class='mat-card-actions'>
+    <div class='id'>Id: {{itemData.id}}</div>
+    <button mat-button
+      color='primary'
+      (click)='getInfo(itemData.id)'>Info</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,13 @@
+.card {
+  max-width: 200px;
+}
+
+.mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .id{
+    align-self: center;
+    margin-right: auto;
+  }
+} 

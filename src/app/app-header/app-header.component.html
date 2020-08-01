@@ -1,0 +1,30 @@
+<mat-toolbar color='primary'>
+  <button mat-icon-button
+    [matMenuTriggerFor]='menu'
+    aria-label=''>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu>
+    <button mat-menu-item
+      [routerLink]="['']">Home</button>
+    <button mat-menu-item
+      [routerLink]="['/item-list', itemGroup.CIGARS_CIGARELLOS]">Cigars & Cigarellos</button>
+    <button mat-menu-item
+      [routerLink]="['/item-list', itemGroup.SMOKELESS]">Smokeless</button>
+    <button mat-menu-item
+      [routerLink]="['/item-list', itemGroup.FILTERED_CIGARS]">Filtered Cigars</button>
+  </mat-menu>
+  <span>Swisher Store</span>
+  <span class='spacer'></span>
+  <button mat-icon-button
+    [routerLink]="['/checkout']"
+    aria-label=''>
+    <mat-icon matBadgeColor='warn'
+      matBadge='{{cartLength}}'
+      [matBadgeHidden]='cartLength <= 0'>shopping_cart</mat-icon>
+  </button>
+  <button mat-icon-button
+    aria-label=''>
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>
