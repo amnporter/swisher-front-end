@@ -31,4 +31,8 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+  public replenishInventory(): void {
+    this.dataService.replenishInventory();
+  }
+
 }

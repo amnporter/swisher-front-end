@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService, ItemGroup } from '../services/data/data.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { DataService, ItemGroup } from '../services/data/data.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   public slides = [
     { image: 'https://media.licdn.com/dms/image/C561BAQEdYDq31Ui2Ow/company-background_10000/0?e=2159024400&v=beta&t=boLs4viL58p5EkEeTXE1cB5CqkixGaP3KlR8_cvz3qU' },
     { image: 'https://swisher.com/wp-content/uploads/2019/05/Swisher_CC_Optimo_1440x400-2.png' },
@@ -19,13 +20,23 @@ export class HomeComponent implements OnInit {
 
   public productList = [];
 
+  private subscriptions = new Subscription();
+
+
   constructor(
     private dataService: DataService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.productList = this.dataService.getDataList();
+    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => {
+      this.productList = this.dataService.getDataList();
+      console.log('this.productList', this.productList);
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   public gotoGroup(group: ItemGroup): void {

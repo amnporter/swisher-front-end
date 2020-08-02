@@ -23,8 +23,8 @@ export class AppComponent implements OnInit {
     }
 
     const cartData: Array<ListItem> = JSON.parse(window.localStorage.getItem('cart'));
-    console.log('cartData', cartData);
-    if (cartData) {
+    console.log('cartData', cartData, cartData[0]);
+    if (cartData && (cartData[0] !== null || cartData[0] !== undefined)) {
       cartData.forEach(item => {
         this.cartService.addToCart(1, item.id);
       });

@@ -1,7 +1,10 @@
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DataService, ListItem } from '../services/data/data.service';
 import { CartService } from '../services/cart/cart.service';
+import { CartCompletedComponent } from '../cart-completed/cart-completed.component';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +19,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   constructor(
     public cartService: CartService,
-    private dataService: DataService
+    private dataService: DataService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +40,8 @@ export class CartComponent implements OnInit, OnDestroy {
   public onSubmit(data): void {
     // reset cart and localstorage
     // update quantities in the DB
+    this.dialog.open(CartCompletedComponent, { disableClose: true });
+    this.cartService.resetCart();
+    this.dataService.updateInventory(this.cartData);
   }
-
 }

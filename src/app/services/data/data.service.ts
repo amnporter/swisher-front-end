@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ReplaySubject, Observable } from 'rxjs';
+import { take, map, catchError } from 'rxjs/operators';
 
 export enum ItemGroup {
   CIGARS_CIGARELLOS = 'Cigars & Cigarellos',
@@ -18,6 +21,8 @@ export interface ListItem {
   price: number;
 }
 
+const API_URL = 'http://localhost:3000/items';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,25 +30,18 @@ export class DataService {
   private productList: Array<ListItem> = [];
   private inventoryUpdated$ = new ReplaySubject();
 
-  constructor() {
-    for (let index = 0; index < 6; index++) {
-      const element: ListItem = {
-        id: index,
-        brandTitle: 'Swisher Sweets LTO' + index,
-        brandLogo: 'https://swisher.com/wp-content/uploads/2019/05/Swisher_LogoGrid_Logo_SwisherSweets_LTO.png',
-        group: ItemGroup.CIGARS_CIGARELLOS,
-        itemImage: 'https://swisher.com/wp-content/uploads/2020/03/Swisher_CC_LTO_640x640.png',
-        desc: 'Where will Swisher take you next? Limited Edition hybrid blends push innovation to the next level. Our bold and unique cigarillos offer the perfect mix of sweet and satisfying. One thing’s for sure — enjoy ‘em before they’re gone.' + index,
-        inventory: 10,
-        price: 10.00
-      };
+  constructor(private http: HttpClient, private router: Router) {
 
-      this.productList.push(element);
-    }
-    this.inventoryUpdated$.next();
+    this.http.get(API_URL, this.getHttpOptions()).pipe(take(1)).subscribe(data => {
+      console.log('data', data);
+      this.productList = data as ListItem[];
+      this.inventoryUpdated$.next();
+    }, err => {
+      throw new Error(err);
+    });
   }
 
-  public getDataList(): Array<any> {
+  public getDataList(): Array<ListItem> {
     return this.productList;
   }
 
@@ -69,5 +67,38 @@ export class DataService {
 
   public getInventorySubject(): Observable<any> {
     return this.inventoryUpdated$.asObservable();
+  }
+
+  public replenishInventory(): void {
+    this.http.get(`${API_URL}?replenish=true`, this.getHttpOptions()).pipe(take(1)).subscribe(data => {
+      console.log('data', data);
+      this.productList = data as ListItem[];
+      this.inventoryUpdated$.next(true);
+      this.router.navigate(['']);
+    }, err => {
+      throw new Error(err);
+    });
+  }
+
+  public updateInventory(cartData: ListItem[]): void {
+    const updateData = [...new Set(cartData)];
+    updateData.forEach(async item => {
+      this.http.put(`${API_URL}/${item.id}`, item, this.getHttpOptions()).pipe(take(1)).subscribe(data => {
+        console.log('data', data);
+      }, err => {
+        throw new Error(err);
+      });
+    });
+    this.inventoryUpdated$.next();
+  }
+
+  private getHttpOptions(): object {
+    const httpOptions = {
+      headers: {
+        Authorization: `Bearer 1234567890`,
+        contentType: 'application/json'
+      }
+    };
+    return httpOptions;
   }
 }

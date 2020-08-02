@@ -8,19 +8,23 @@ import { ItemListComponent } from './item-list/item-list.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'item-list/:group',
-    component: ItemListComponent
+    component: ItemListComponent,
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'item-description/:id',
-    component: ItemDescriptionComponent
+    component: ItemDescriptionComponent,
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'checkout',
-    component: CartComponent
+    component: CartComponent,
+    runGuardsAndResolvers: 'always'
   },
   {
     path: '**',
@@ -29,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

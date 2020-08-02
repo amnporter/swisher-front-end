@@ -24,7 +24,9 @@
       [matBadgeHidden]='cartLength <= 0'>shopping_cart</mat-icon>
   </button>
   <button mat-icon-button
-    aria-label=''>
-    <mat-icon>share</mat-icon>
+    matTooltip='Replenish DB inventory'
+    aria-label=''
+    (click)='replenishInventory()'>
+    <mat-icon>restore</mat-icon>
   </button>
 </mat-toolbar>

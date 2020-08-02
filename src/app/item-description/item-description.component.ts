@@ -18,6 +18,7 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy {
   public inventory: number;
   public item: ListItem;
   private subscriptions = new Subscription();
+  private routeParam: number;
 
   constructor(
     private dataService: DataService,
@@ -31,7 +32,9 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(this.activatedRoute.params.subscribe(params => {
       console.log('param', params);
-      this.item = this.dataService.getListItem(+params.id);
+      this.routeParam = +params.id;
+      this.item = this.dataService.getListItem(this.routeParam);
+      console.log('this.item', this.item);
       this.inventory = this.item.inventory;
     }));
 
@@ -58,6 +61,11 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy {
   }
 
   private updateInventory(): void {
+    console.log('updateInventory');
+    if (!this.item) {
+      this.item = this.dataService.getListItem(this.routeParam);
+    }
+
     this.inventory = this.item.inventory;
   }
 }

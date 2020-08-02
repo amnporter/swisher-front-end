@@ -11,20 +11,14 @@
               <input matInput
                 type='text'
                 name='firstName'
-                ngModel
-                required
-                #firstName='ngModel'>
-              <mat-error *ngIf='firstName.invalid'>Please enter</mat-error>
+                value='First Name'>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Last name</mat-label>
               <input matInput
                 type='text'
                 name='lastName'
-                ngModel
-                required
-                #lastName='ngModel'>
-              <mat-error *ngIf='lastName.invalid'>Please enter</mat-error>
+                value='Last Name'>
             </mat-form-field>
           </div>
           <div class='address-block'>
@@ -106,7 +100,8 @@
           <div class='button-container'>
             <button mat-raised-button
               color='primary'
-              type='submit'>BUY NOW</button>
+              type='submit'
+              [disabled]='cartData.length<=0'>BUY NOW</button>
           </div>
         </form>
       </mat-card>

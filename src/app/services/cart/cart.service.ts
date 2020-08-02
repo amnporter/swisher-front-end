@@ -1,14 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService, ListItem } from '../data/data.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartService {
+export class CartService implements OnDestroy {
 
   private cart: Array<ListItem> = [];
+  private subscriptions = new Subscription();
 
-  constructor(private dataService: DataService) { }
+
+  constructor(private dataService: DataService) {
+    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(reset => {
+      if (reset) {
+        this.resetCart();
+      }
+    }));
+  }
+
+  ngOnDestroy(): void{
+    this.subscriptions.unsubscribe();
+  }
 
   public addToCart(quantity: number, id: number): void {
     for (let index = 0; index < quantity; index++) {
@@ -31,5 +44,11 @@ export class CartService {
 
   public getCart(): Array<ListItem> {
     return this.cart;
+  }
+
+  public resetCart(): void {
+    this.cart = [];
+    window.localStorage.removeItem('cart');
+
   }
 }

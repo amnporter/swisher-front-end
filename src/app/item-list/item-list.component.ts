@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { DataService } from '../services/data/data.service';
+import { DataService, ItemGroup } from '../services/data/data.service';
 
 @Component({
   selector: 'app-item-list',
@@ -12,6 +12,7 @@ import { DataService } from '../services/data/data.service';
 export class ItemListComponent implements OnInit, OnDestroy {
   public groupList = [];
   private subscriptions = new Subscription();
+  private routeParam: ItemGroup;
 
   constructor(
     private dataService: DataService,
@@ -21,8 +22,14 @@ export class ItemListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.subscriptions.add(this.activatedRoute.params.subscribe(params => {
-      console.log('param', params);
-      this.groupList = this.dataService.getGroupList(params.group);
+      this.routeParam = params.group;
+      this.groupList = this.dataService.getGroupList(this.routeParam);
+    }));
+
+    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => {
+      if (this.groupList.length <= 0) {
+        this.groupList = this.dataService.getGroupList(this.routeParam);
+      }
     }));
   }
 
