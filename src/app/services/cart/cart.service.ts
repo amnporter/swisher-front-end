@@ -1,4 +1,4 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subscription, ReplaySubject, Observable } from 'rxjs';
 import { DataService, ListItem } from '../data/data.service';
 
