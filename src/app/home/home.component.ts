@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DataService, ItemGroup } from '../services/data/data.service';
+import { DataService, ItemGroup, ListItem } from '../services/data/data.service';
 
 @Component({
   selector: 'app-home',
@@ -18,28 +17,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public itemGroup = ItemGroup;
 
-  public productList = [];
+  public productList: Array<ListItem> = [];
 
   private subscriptions = new Subscription();
 
 
   constructor(
-    private dataService: DataService,
-    private router: Router,
+    private dataService: DataService
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => {
-      this.productList = this.dataService.getDataList();
-      console.log('this.productList', this.productList);
+    this.subscriptions.add(this.dataService.getList().subscribe((data: Array<ListItem>) => {
+      this.productList = data;
     }));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-  }
-
-  public gotoGroup(group: ItemGroup): void {
-    this.router.navigate(['/item-list', group]);
   }
 }

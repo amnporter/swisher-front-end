@@ -121,7 +121,7 @@
           aria-label=''
           color='primary'>
           <mat-icon mat-list-icon
-            (click)='cartService.removeFromCart(i)'>delete</mat-icon>
+            (click)='cartService.removeFromCart(i, item.id)'>delete</mat-icon>
         </button>
       </div>
       <div *ngIf='cartData.length<=0'>No Items in your cart</div>

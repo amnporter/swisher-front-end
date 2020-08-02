@@ -22,9 +22,8 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => {
-      this.cartLength = this.cartService.getCart().length;
-    }));
+    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => { this.updateBadge(); }));
+    this.subscriptions.add(this.cartService.getCartDataUpdatedSubject().subscribe(() => { this.updateBadge(); }));
   }
 
   ngOnDestroy(): void {
@@ -33,6 +32,10 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
   public replenishInventory(): void {
     this.dataService.replenishInventory();
+  }
+
+  private updateBadge(): void {
+    this.cartLength = this.cartService.getCart().length;
   }
 
 }

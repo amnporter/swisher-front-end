@@ -22,9 +22,9 @@
     </mat-carousel>
   </div>
   <div class='featured'>
-    <span (click)='gotoGroup(itemGroup.CIGARS_CIGARELLOS)'>{{itemGroup.CIGARS_CIGARELLOS | uppercase}}</span>
-    <span (click)='gotoGroup(itemGroup.SMOKELESS)'>{{itemGroup.SMOKELESS | uppercase}}</span>
-    <span (click)='gotoGroup(itemGroup.FILTERED_CIGARS)'>{{itemGroup.FILTERED_CIGARS | uppercase}}</span>
+    <span [routerLink]="['/item-list', itemGroup.CIGARS_CIGARELLOS]">{{itemGroup.CIGARS_CIGARELLOS | uppercase}}</span>
+    <span [routerLink]="['/item-list', itemGroup.SMOKELESS]">{{itemGroup.SMOKELESS | uppercase}}</span>
+    <span [routerLink]="['/item-list', itemGroup.FILTERED_CIGARS]">{{itemGroup.FILTERED_CIGARS | uppercase}}</span>
   </div>
   <div class='products'>
     <app-item-card *ngFor='let product of productList; index as i;'

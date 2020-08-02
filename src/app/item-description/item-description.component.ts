@@ -15,7 +15,6 @@ import { CartService } from '../services/cart/cart.service';
 })
 export class ItemDescriptionComponent implements OnInit, OnDestroy {
   public quantity = 1;
-  public inventory: number;
   public item: ListItem;
   private subscriptions = new Subscription();
   private routeParam: number;
@@ -31,14 +30,11 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.subscriptions.add(this.activatedRoute.params.subscribe(params => {
-      console.log('param', params);
       this.routeParam = +params.id;
-      this.item = this.dataService.getListItem(this.routeParam);
-      console.log('this.item', this.item);
-      this.inventory = this.item.inventory;
+      this.updateItem();
     }));
 
-    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => { this.updateInventory(); }));
+    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => { this.updateItem(); }));
   }
 
   ngOnDestroy(): void {
@@ -46,7 +42,7 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy {
   }
 
   public addToCart(): void {
-    this.cartService.addToCart(this.quantity, this.item.id);
+    this.cartService.addToCart(this.quantity, this.item);
 
     const message = `${this.quantity} ${this.item.brandTitle} has been added to the cart.`;
     const action = 'Checkout';
@@ -60,12 +56,9 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy {
     this.quantity = 1;
   }
 
-  private updateInventory(): void {
-    console.log('updateInventory');
-    if (!this.item) {
-      this.item = this.dataService.getListItem(this.routeParam);
-    }
-
-    this.inventory = this.item.inventory;
+  private updateItem(): void {
+    this.dataService.getListItem(this.routeParam).subscribe((data: ListItem) => {
+      this.item = data;
+    });
   }
 }

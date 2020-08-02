@@ -18,8 +18,6 @@ export class ItemCardComponent implements OnInit {
   }
 
   public getInfo(id: number): void {
-    console.log('getInfo', id);
     this.router.navigate(['/item-description', id]);
   }
-
 }

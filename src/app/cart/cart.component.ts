@@ -24,13 +24,8 @@ export class CartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => {
-      this.cartData = this.cartService.getCart();
-      this.total = 0;
-      this.cartData.forEach(item => {
-        this.total += item.price;
-      });
-    }));
+    this.subscriptions.add(this.dataService.getInventorySubject().subscribe(() => { this.updateCartData(); }));
+    this.subscriptions.add(this.cartService.getCartDataUpdatedSubject().subscribe(() => { this.updateCartData(); }));
   }
 
   ngOnDestroy(): void {
@@ -38,10 +33,15 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(data): void {
-    // reset cart and localstorage
-    // update quantities in the DB
     this.dialog.open(CartCompletedComponent, { disableClose: true });
     this.cartService.resetCart();
-    this.dataService.updateInventory(this.cartData);
+  }
+
+  private updateCartData(): void {
+    this.cartData = this.cartService.getCart();
+    this.total = 0;
+    this.cartData.forEach(item => {
+      this.total += item.price;
+    });
   }
 }

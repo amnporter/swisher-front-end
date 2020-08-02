@@ -1,5 +1,5 @@
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, ReplaySubject, Observable } from 'rxjs';
 import { DataService, ListItem } from '../data/data.service';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { DataService, ListItem } from '../data/data.service';
 export class CartService implements OnDestroy {
 
   private cart: Array<ListItem> = [];
+  private cartDataUpdated$ = new ReplaySubject();
   private subscriptions = new Subscription();
 
 
@@ -19,36 +20,43 @@ export class CartService implements OnDestroy {
     }));
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  public addToCart(quantity: number, id: number): void {
+  public addToCart(quantity: number, item: ListItem): void {
+    this.dataService.updateItemInventory(-quantity, item);
+
     for (let index = 0; index < quantity; index++) {
-      this.cart.push(this.dataService.getListItem(id));
+      this.cart.push(item);
     }
-
     window.localStorage.setItem('cart', JSON.stringify(this.cart));
-
-    this.dataService.updateItemQuantity(-quantity, id);
   }
 
-  public removeFromCart(index: number): void {
-    const item = this.cart[index];
+  public removeFromCart(index: number, itemId: number): void {
+    this.dataService.getListItem(itemId).subscribe(data => {
+      this.dataService.updateItemInventory(1, data);
+    });
     this.cart.splice(index, 1);
-
     window.localStorage.setItem('cart', JSON.stringify(this.cart));
-
-    this.dataService.updateItemQuantity(1, item.id);
   }
 
   public getCart(): Array<ListItem> {
     return this.cart;
   }
 
+  public addStorageData(item: ListItem): void {
+    this.cart.push(item);
+    this.cartDataUpdated$.next();
+  }
+
   public resetCart(): void {
     this.cart = [];
     window.localStorage.removeItem('cart');
+    this.cartDataUpdated$.next();
+  }
 
+  public getCartDataUpdatedSubject(): Observable<any> {
+    return this.cartDataUpdated$.asObservable();
   }
 }
