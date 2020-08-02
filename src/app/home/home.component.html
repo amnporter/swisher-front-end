@@ -27,7 +27,7 @@
     <span [routerLink]="['/item-list', itemGroup.FILTERED_CIGARS]">{{itemGroup.FILTERED_CIGARS | uppercase}}</span>
   </div>
   <div class='products'>
-    <app-item-card *ngFor='let product of productList; index as i;'
+    <app-item-card *ngFor='let product of productList | async; index as i;'
       [itemData]='product'>
     </app-item-card>
   </div>

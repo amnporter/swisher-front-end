@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { DataService, ItemGroup, ListItem } from '../services/data/data.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { DataService, ItemGroup, ListItem } from '../services/data/data.service'
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   public slides = [
     { image: 'https://media.licdn.com/dms/image/C561BAQEdYDq31Ui2Ow/company-background_10000/0?e=2159024400&v=beta&t=boLs4viL58p5EkEeTXE1cB5CqkixGaP3KlR8_cvz3qU' },
     { image: 'https://swisher.com/wp-content/uploads/2019/05/Swisher_CC_Optimo_1440x400-2.png' },
@@ -16,23 +16,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   public itemGroup = ItemGroup;
-
-  public productList: Array<ListItem> = [];
-
-  private subscriptions = new Subscription();
-
+  public productList: Observable<ListItem[]>;
 
   constructor(
     private dataService: DataService
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.dataService.getList().subscribe((data: Array<ListItem>) => {
-      this.productList = data;
-    }));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this.productList = this.dataService.getList();
   }
 }
